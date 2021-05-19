@@ -1,15 +1,11 @@
-
-
-
-
-
-	 insert into dbo.CD_Fin(Company,Business,ID_transacao,Id,Nome,Email,Data_Transacao,Data_Ultimo_Status,
+insert into dbo.CD_Fin(Company,Business,ID_transacao,Id,Nome,Email,Data_Transacao,Data_Ultimo_Status,
       Tipo,Valor,Operação,Metodo,Pedido,[Status],Tid,Uuid ,Saldo,Empresa
       ,Liga,Valor_Liga,Times,Valor_Times,Transacao_Relacionada)
 select 'Catimba' as Company,
 	'Bolada5' as Business, 
-  CAST(Id as varchar(5)) + 
-    substring(left(replace(replace(replace( replace(cast([Data Transacao] as varchar(23)),'-',''),'T',''),':',''),'.',''), 13), 3, 13) as Id_Transacao,
+ substring(left(replace(replace(replace( replace(cast([Data Transacao] as varchar(23)),'-',''),'T',''),':',''),'.',''), 16), 3, 16) +
+    dbo.strzero(cast(cast(id as varchar(6)) as integer), 6) as Id_Transacao,
+   
 	  CAST(Id as varchar(5)) + 	
 		CAST(Nome AS varchar(50)) as Nome,
 		Cast(Id as varchar(5)) as Id,
@@ -19,7 +15,7 @@ select 'Catimba' as Company,
       Cast (Tipo as varchar(20)) as Tipo, 
 	   case when cast([Valor] as varchar(50)) = '-' then 0 else cast(cast([Valor] as varchar(50)) as numeric(18,2)) end as Valor, 
 	Cast(Operacao as varchar(25))as Operacão,
-	--  CAST(case when Operacao = 'AdiÃ§Ã£o de crÃ©dito' then 'Adição de Crédito' else Operacao end as varchar(25)) as Operação, 
+ -- CAST(case when  cast(Operacao = 'AdiÃ§Ã£o de crÃ©dito' then 'Adição de Crédito' else Operacao end as varchar(25)) as Operação, 
 	  CAST(Metodo as varchar(20)) as Metodo, 
 	  Cast (Pedido as varchar(40)) as Pedido ,
 	  CAST([Status] as varchar(12)) as [Status],
